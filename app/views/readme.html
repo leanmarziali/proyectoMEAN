@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Readme</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="img/favicon.png" />
+</head>
+<body>
+     <h2>Administradores: Presentación del Proyecto</h2>
+        <ul>
+            <li>
+                <p>Usuario: Leandro Marziali</p>
+                <p>contraseña: admin</p>
+            </li>
+            <li>
+                <p>Usuario: Octavio Gzain</p>
+                <p>contraseña: admin</p>
+            </li>
+            <li>
+                <p>Usuario: Diego Martinez</p>
+                <p>contraseña: admin</p>
+            </li>
+            <li>
+                <p>Usuario: Mariano Tucat</p>
+                <p>contraseña: admin</p>
+            </li>
+            <li>
+                <p>Usuario: Fernando Martinez</p>
+                <p>contraseña: admin</p>
+            </li>
+        </ul>
+    <h2>Spotify</h2>
+    <p>Para hacer uso del reproductor de Spotify debe estar logueado con su cuenta y así obtener dicha funcionalidad.</p>
+    <h2>Autenticación</h2>
+    <p>Los administradores podrán modificar la discoteca solo con las cuentas admin locales. Si usan Facebook o Twitter seran evaluados como usarios visitantes.</p>
+    <h2>Creación de Admins</h2>
+    <p>Teniendo en cuenta el enunciado del proyecto, se asume que los administradores están precargados en la app.</p>
+    <p>Para cargar un admin ejectuar la siguiente query en el cliente mongodb conectado a la base de datos:</p>
+    <p>
+        db.users.insert( { 'username' : 'Mariano Tucat', 'rol' : 'ADMIN', 'local' : { 'email' : 'mt@cs.uns.edu.ar', 'password' : '$2a$04$mk05IympiPNQyIPybtfReu1s.U7/021bCmGT6e8wtipmfz/YPlMLK' } } )
+    </p>
+    <p>
+        Para este ejemplo se considera que la contraseña es 'admin'. Se usa bcrypt para hashear las pw planas por lo que en el ejemplo se observa el resultado de la contraseña 'admin' codificada con bcrypt.
+    </p>
+    <p>En el método generateHash del modelo user, se especifica como se genera el hash. Para la codificación se debe hacer uso de bcrypt con 8 pasadas(Salt = 8).</p>
+    <h2>Server</h2>
+    <p>Para levantar el server se utiliza en la root del proyecto: 'node server'.</p>
+</body>
+</html>

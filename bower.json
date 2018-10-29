@@ -1,0 +1,17 @@
+{
+  "name": "discoteca",
+  "version": "0.0.1",
+  "dependencies": {
+    "bootstrap": "latest",
+    "font-awesome": "latest",
+    "animate.css": "latest",
+    "angular": "latest",
+    "angular-route": "latest",
+    "angular-resource": "latest",
+    "less": "latest",
+    "angular-timeago": "^0.4.3",
+    "angular-spotify": "^1.4.2",
+    "ng-file-upload": "^12.0.4",
+    "angular-sanitize": "^1.5.7"
+  }
+}

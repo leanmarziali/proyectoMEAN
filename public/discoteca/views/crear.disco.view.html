@@ -1,0 +1,112 @@
+<section data-ng-controller="discoController">
+    <h1>Tu nuevo disco</h1>
+    <!-- llama al metodo create() definido en el controlador -->
+    <form data-ng-submit="create()" name="form">
+        <div>
+            <div class="input-group input-group-lg">
+            <span class="input-group-addon">Título</span>
+            <input class="form-control" type="text" data-ng-model="nombre" id="nombre" placeholder="Nombre de tu disco" required>
+            <span class="input-group-addon glyphicon glyphicon-search" ></span>
+            </div>
+            <!-- Se matchean los albumenes existentes segun lo que ingrese el administrador -->
+                <div class="col-md-6">
+                    <div class="panel">
+                       <div ng-show="resultados">
+                           <h3>Elegí el disco que quieras agregar!</h3>
+                       </div>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="panel-scrollable">
+                                    <div data-ng-repeat="resultado in resultados" class="list-group-item">
+                                            <div class="media">
+                                                <a href="" ng-click="armarDisco(resultado.numero - 1)">
+                                                    <div class="media-left">
+                                                        <img class="media-object" ng-src={{resultado.preview}} alt="Portada del disco">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading">{{resultado.titulo}}</h4>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+            <div class="col-md-13" ng-show="resultados">
+                <h3>¿Con cuáles relacionas tu disco?</h3>
+                <hr>
+                <div class="panel-scrollable relaciones" data-ng-init="find()">
+                    <div data-ng-repeat="disco in discos" class="list-group-item">
+                        <div class="input-group input-group-lg">
+                            <div class="media-left">
+                            <input type="checkbox" aria-label="..." ng-model="disco.seleccionado">
+                             </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">{{disco.nombre}}</h4>
+                                <p>{{disco.autor}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <h3>¿No es lo que buscas?</h3>
+                <h4>Agrega un disco personalizado</h4>
+                <hr>
+                         <div class="input-group">
+                             <span class="input-group-addon">Genero</span>
+                             <input class="form-control" type="text" data-ng-model="genero" id="genero" placeholder="Género del disco" required>
+                         </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">Año</span>
+                            <input class="form-control" type="number" data-ng-model="anio" id="anio" placeholder="Año de creación" required>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">Autor</span>
+                            <input class="form-control" type="text" data-ng-model="autor" id="autor" placeholder="Autor del disco" required>
+                        </div>
+                        <br>
+                        <label ng-hide="file">Es obligatorio cargar una portada para el album.</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">Tapa</span>
+                            <input  class="form-control"  type="text"  placeholder="Nombre del archivo" data-ng-model="file.name" id="file.name" disabled>
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+                                     ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="400" ngf-min-width="400">Buscar</button>
+                            </span>
+                        </div>
+                        <hr>
+                        <div class="col-md-6">
+                            <h4>Canciones</h4>
+                            <div data-ng-repeat="choice in choices">
+                                <div class="input-group">
+                                    <span class="input-group-addon">{{choice.numero}}</span>
+                                    <input class="form-control" type="text" name="" id="{{choice.id}}" placeholder="Ingrese el nombre de la canción">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-warning" ng-click="removeNewChoice()">Remover Canción</button>
+                                    </span>
+                                </div>
+                                <br>
+                            </div>
+                            <div>
+                                <button type="button"class="btn btn-info" ng-click="addNewChoice()">Agregar Canción</button>
+                            </div>
+                            <hr>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Agregar Disco</button>
+                            </div>
+                        </div>
+            </div>
+
+        <!-- El elemento mensaje de error -->
+        <div data-ng-show="error">
+            <strong data-ng-bind="error"></strong>
+        </div>
+    </form>
+</section>
+

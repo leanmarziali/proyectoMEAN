@@ -1,0 +1,95 @@
+.panel-scrollable {
+
+    height:100vh;
+    overflow-y:auto;
+    width:100%;
+}
+
+.relaciones {
+
+    height:30vh;
+    overflow-y:auto;
+    width: 50%;
+}
+
+.height-content {
+
+    height:100vh;
+}
+
+/* scrolling nav para los tabs */
+
+ul.nav li {
+    display: inline-block;
+    float: none;
+}
+
+.wrapper {
+    position:relative;
+    margin:0 auto;
+    overflow:hidden;
+    padding:5px;
+    height:50px;
+}
+
+.list {
+    position:absolute;
+    left:0px;
+    top:0px;
+    min-width:3000px;
+    margin-left:12px;
+    margin-top:0px;
+}
+
+.list li{
+    display:table-cell;
+    position:relative;
+    text-align:center;
+    cursor:grab;
+    cursor:-webkit-grab;
+    color:#efefef;
+    vertical-align:middle;
+}
+
+.scroller {
+    text-align:center;
+    cursor:pointer;
+    display:none;
+    padding:7px;
+    padding-top:11px;
+    white-space:no-wrap;
+    vertical-align:middle;
+    background-color:#fff;
+}
+
+.scroller-right{
+    float:right;
+}
+
+.scroller-left {
+    float:left;
+}
+
+.shadowtext{
+    text-shadow: 2px 2px 4px #000000;
+}
+
+body{
+    /*background: url('../img/bg-main3.jpg');*/
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.btn-black{
+ background-color:#383838;
+ color:#ffffff
+}
+
+.btn-black:hover{
+     color:#ffffff
+ }
+.btn-black:focus{
+    color:#ffffff
+}

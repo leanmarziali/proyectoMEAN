@@ -1,0 +1,162 @@
+<!-- La view artículo -->
+
+<!-- Este panel tiene que ser scrollable independiente del main content -->
+<section data-ng-controller="discoController" data-ng-init="find()">
+    <div class="col-md-4">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="tab-content">
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Búsqueda" data-ng-model="searchKeyword">
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                                      </span>
+                                </div>
+                             </div>
+                            <div class="col-xs-4">
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle capitalize" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{labelBotonOrdenar}}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <li><a ng-click="setOrden('autor')">Autor</a></li>
+                                        <li><a ng-click="setOrden('nombre')">Nombre del disco</a></li>
+                                        <li><a ng-click="setOrden('popularidad')">Popularidad</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <hr>
+
+                    <div class="panel-scrollable">
+                        <div class="col-sm-3">
+                        </div>
+                            <div class="col-md-8 list-group">
+                                <div data-ng-repeat="disco in discos | filter:searchKeyword | orderBy:ordenador" style="border: 0;box-shadow:none;" class="col-sm-12 thumbnail text-center">
+                                    <a data-ng-href="#!/discos/{{disco._id}}" class="thumbnail">
+                                        <img ng-src={{disco.thumbnail}} alt="{{disco.nombre}}">
+                                        <div class="carousel-caption">
+                                            <h4>{{disco.nombre}}</h4>
+                                            <button ng-show="rol == 'ADMIN'" ng-click="delete(disco)" type="button" class="btn btn-danger btn-sm" aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                    </div>
+                 </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-ng-controller="discoController" data-ng-init="findOne()">
+
+
+<div ng-show="disco" class="col-md-8 height-content">
+
+    <div class="container-fluid">
+         <div class="row">
+                <div class="page-header">
+                        <h1>{{disco.nombre}} <small>{{disco.autor}}</small></h1>
+                </div>
+                <div class="col-sm-6">
+                    <img ng-src={{release.img}} class="img-responsive"alt="Portada del disco">
+                    <div class="carousel-caption">
+                        <p class="shadowtext lead" data-ng-bind="disco.anio"></p>
+                        <p class="shadowtext lead" data-ng-bind="disco.genero"></p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <ol >
+                        <li data-ng-repeat="cancion in disco.canciones">{{cancion.nombre}}</li>
+                    </ol>
+                </div>
+                <!--  Ver Relacionado <p data-ng-bind="release.related"></p>  -->
+                 <div class="col-sm-6">
+                        <uib-rating data-ng-model="promedioCalificacion" max="max" read-only="true"  aria-labelledby="default-rating"></uib-rating>
+                        <span class="label pull-left" ng-class="{'label-warning': promedioCalificacion<2, 'label-info': promedioCalificacion>=3 && promedioCalificacion<4, 'label-success': promedioCalificacion>=4}">Calificación promedio: {{promedioCalificacion}}/5</span>
+                 </div>
+
+                 <div class="col-sm-6 ">
+                     <span class="badge">{{disco.resenias.length}} Comentarios</span>
+                 </div>
+
+                 <div class="col-sm-6" ng-show="disco.relacionados.length>0">
+                     <p class="lead">También podría interesarte...</p>
+                     <div class="list-group">
+                         <a ng-repeat="relacionado in disco.relacionados" href="#!/discos/{{relacionado.idRel}}" class="list-group-item">{{relacionado.nombre}}</a>
+                     </div>
+                 </div>
+         </div>
+    </div>
+
+    <hr>
+    <!-- Playlist del disco Spotify -->
+    <div class="row">
+        <div class="col-md-12" ng-show="disco.uri">
+            <h4>Lista de Repoducción</h4>
+            <iframe class="embed-responsive-item" ng-src="{{getIframeSrc(disco.uri)}}" width="800" height="300" frameborder="0" allowtransparency="true"></iframe>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 center-block">
+            <button type="button" class="btn btn-black center-block" ng-click="colapsar()">{{labelBotonComentar}}</button>
+            <br>
+            <div class="well" uib-collapse="isCollapsed">
+                <div class="text-right">
+                    <button ng-click="toggleVotacion()"  ng-disabled="yaVoto" ng-show="!yaVoto" class="btn btn-success">Hacer un comentario</button>
+                </div>
+
+                    <hr>
+
+                    <!-- Votacion, se activa cuando puso hacer un comentario-->
+                    <form class="form-horizontal"  ng-submit="agregarResenia()" ng-show="enVotacion()">
+
+                        <div class="form-group">
+                            <label  for="comentario">Ingrese su comentario</label>
+                            <textarea id="comentario" style="resize: none;" class="form-control" rows="3" placeholder="Ingrese su opinion..." data-ng-model="comentario" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <uib-rating style="padding-left:10px" data-ng-model="rate" max="max" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></uib-rating>
+                            <span class="label" ng-class="{'label-warning': percent<=2, 'label-info': percent>2 && percent<=4, 'label-success': percent>=5}" ng-show="overStar && !isReadonly">{{percent}} Estrellas</span>
+                        </div>
+
+                        <div class="form-group">
+                            <div>
+                                <input type="submit" value="Comentá" class="btn btn-primary"/>
+                            </div>
+                        </div>
+
+                        <div><p  data-ng-bind="error"></p></div>
+                        <hr>
+                    </form>
+                    <div data-ng-repeat="resenia in disco.resenias |orderBy:'-fecha'" class="row">
+                        <div class="col-sm-12">
+                                <uib-rating data-ng-model="resenia.calificacion" max="max" read-only="true"  aria-labelledby="default-rating"></uib-rating>
+                                <span class="label" ng-class="{'label-warning': resenia.calificacion<2, 'label-info': resenia.calificacion>=2 && resenia.calificacion<4, 'label-success': resenia.calificacion>=4}">{{resenia.calificacion}}/5</span>
+                                <span class="pull-right"><em>{{resenia.fecha | timeago}} por <strong>{{resenia.nombreusuario}}</strong></em></span>
+
+                                    <blockquote>
+                                        <p ng-bind="resenia.comentario"></p>
+                                    </blockquote>
+                            <hr>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+</div>
+
+</section>
